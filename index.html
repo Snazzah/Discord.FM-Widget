@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" href="widget.css">
+  </head>
+  <body>
+    <div class="widgetBody" onmouseover="document.getElementById('winBtns').style.display = 'block'" onmouseout="document.getElementById('winBtns').style.display = 'none'">
+      <img id="avatar" src="https://discord.fm/assets/logo.png" width=128 height=128 style="float: left;">
+      <div style="float: left; padding: 5px 5px; width: 350px;">
+        <p id="artist" style="margin-left: 3px;"></p>
+        <h1 id="title">Connecting Websocket...</h1>
+        <h3 id="lib" style="margin-left: 3px;">Missingno</h3>
+        <div id="winBtns" style="float: right; padding: 5px 5px; display: none;">
+          <input draggable="false" align="right" class="win-sys" type="image" src="./img/close.png" alt="Close" title="Close" width=20 height=20 onclick="win.close()">
+          <input draggable="false" align="right" class="win-sys" type="image" src="./img/back.png" alt="Back" title="back" width=20 height=20 onclick="main.backToStart()">
+        </div>
+      </div>
+    </div>
+    <script>
+    const remote = require('electron').remote
+    const main = remote.require('./index.js')
+    const win = main.win()
+    const request = require('superagent')
+    function checkBounds(song){
+      if(document.body.scrollHeight > 149){
+        document.getElementById('title').outerHTML = `<marquee id="title" scrollamount="5"><h1>${song}</h1></marquee>`
+      }else{
+        document.getElementById('title').outerHTML = `<h1 id="title">${song}</h1>`
+      }
+    }
+		var QueryString = function () {
+		  // This function is anonymous, is executed immediately and
+		  // the return value is assigned to QueryString!
+		  var query_string = {};
+		  var query = window.location.search.substring(1);
+		  var vars = query.split("&");
+		  for (var i=0;i<vars.length;i++) {
+			var pair = vars[i].split("=");
+				// If first entry with this name
+			if (typeof query_string[pair[0]] === "undefined") {
+			  query_string[pair[0]] = decodeURIComponent(pair[1]);
+				// If second entry with this name
+			} else if (typeof query_string[pair[0]] === "string") {
+			  var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+			  query_string[pair[0]] = arr;
+				// If third or later entry with this name
+			} else {
+			  query_string[pair[0]].push(decodeURIComponent(pair[1]));
+			}
+		  }
+		  return query_string;
+		}();
+    viableLibs = {
+      'electro-hub': "Electro Hub",
+      'chill-corner': "Chill Corner",
+      'hip-hop': "Hip-Hop",
+      'coffee-house-jazz': "Coffee-House Jazz",
+      'japanese-lounge': "Japanese Lounge",
+      'classical': "Classical",
+      'retro-renegade': "Retro Renegade",
+      'metal-mix': "Metal Mix",
+      'korean-madness': "Korean Madness"
+    }
+    console.log('Connecting...');
+    if(Object.keys(viableLibs).map(l=>l==QueryString.lib).includes(true)){
+      var socket = require('socket.io-client')('https://sockets.temp.discord.fm')
+      .on('connect', function () {
+        request.get('https://temp.discord.fm/libraries/queue')
+        .end((err,res)=>{
+          if(err){
+            document.getElementById('title').innerHTML = "Song will update on the next song..."
+          }else{
+            document.getElementById('title').innerHTML = res.body[QueryString.lib].current.title
+            checkBounds(res.body[QueryString.lib].current.title)
+          }
+        });
+        console.log('Successfully connected to sockets server! Listening for events...');
+        document.getElementById('lib').innerHTML = viableLibs[QueryString.lib]
+
+        socket.on('play', function (data) {
+          if (data.bot == QueryString.lib) {
+            document.getElementById('title').innerHTML = data.song.title
+            checkBounds(data.song.title)
+          }
+        });
+      })
+
+      .on('error', function (err) {
+        console.log('Houston, we have a problem...');
+        console.error(err);
+        console.error(err.stack);
+      })
+
+      .on('reconnecting', function (x) {
+        console.log('Attempting to reconnect to the Socket server (attempt ' + x + ').');
+      })
+
+      .on('disconnect', function () {
+        console.log('Disconnected from the Socket server.');
+      });
+    }
+    </script>
+  </body>
+</html>
