@@ -66,8 +66,8 @@
     }
     console.log('Connecting...');
     if(Object.keys(viableLibs).map(l=>l==QueryString.lib).includes(true)){
-      var socket = require('socket.io-client')('https://sockets.temp.discord.fm')
-      .on('connect', function () {
+      var socket = new Websocket('wss://sockets.temp.discord.fm');
+      socket.onopen(function () {
         request.get('https://temp.discord.fm/libraries/queue')
         .end((err,res)=>{
           if(err){
@@ -78,28 +78,41 @@
           }
         });
         console.log('Successfully connected to sockets server! Listening for events...');
-        document.getElementById('lib').innerHTML = viableLibs[QueryString.lib]
+        document.getElementById('lib').innerHTML = viableLibs[QueryString.lib];
+      });
+      
+      socket.onmessage(function (e) {
+        var data = e.data;
 
-        socket.on('play', function (data) {
-          if (data.bot == QueryString.lib) {
-            document.getElementById('title').innerHTML = data.song.title
-            checkBounds(data.song.title)
+        if (data === 'helo') {
+          return console.log('received helo');
+        }
+        
+        try {
+          data = JSON.parse(data);
+
+          if (data.event == 'play') {
+            if (data.data.bot == QueryString.lib) {
+              document.getElementById('title').innerHTML = data.data.song.title
+              checkBounds(data.data.song.title)
+            }
           }
-        });
-      })
+        } catch (err) {
+          console.log('Failed to parse incoming data:', err);
+        }
+      });
 
-      .on('error', function (err) {
+      socket.onerror(function (err) {
         console.log('Houston, we have a problem...');
         console.error(err);
         console.error(err.stack);
-      })
+      });
 
-      .on('reconnecting', function (x) {
-        console.log('Attempting to reconnect to the Socket server (attempt ' + x + ').');
-      })
-
-      .on('disconnect', function () {
-        console.log('Disconnected from the Socket server.');
+      socket.onclose(function () {
+        console.log('Disconnected from socket server, reconnecting in 10s');
+        setTimeout(function () {
+          socket = new Websocket('wss://sockets.temp.discord.fm');
+        }, 10000);
       });
     }
     </script>
