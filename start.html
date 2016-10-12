@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="widgetBody" style="overflow-y: hidden; overflow-x: hidden;">
-      <img id="avatar" src="https://discord.fm/assets/logo.png" width=128 height=128 style="float: left;">
+      <img id="avatar" src="./img/dfm.png" width=128 height=128 style="float: left;">
       <select id="dropdown" onchange="gotoLib(this.value)" style="float: left;">
         <option value="none">Select a Library</option>
         <option value="electro-hub">Electro Hub</option>
@@ -21,12 +21,13 @@
         <option value="retro-renegade">Retro Renegade</option>
         <option value="metal-mix">Metal Mix</option>
         <option value="korean-madness">Korean Madness</option>
+        <option value="lfg-electro-hub">LFG Electro Hub</option>
       </select>
       <div style="float: right; padding: 5px 5px;">
         <input draggable="false" align="right" class="win-sys" type="image" src="./img/close.png" alt="Close" title="Close" width=20 height=20 onclick="win.close()">
         <input draggable="false" align="right" class="win-sys" type="image" src="./img/minimize.png" alt="Minimize" title="Minimize" width=20 height=20 onclick="win.minimize()">
       </div>
-      <footer><code>Made by <a href="javascript:main.openLink('https://twitter.com/SnazzahGuy')">Snazzah</a> — <a href="javascript:main.openLink('https://discord.fm')">Discord.FM</a></code></footer>
+      <footer><code>Made by <a href="javascript:main.openLink('https://twitter.com/SnazzahGuy')">Snazzah</a> — <a href="javascript:main.openLink('https://discord.fm')">Discord.FM</a> - <a href="javascript:main.openLink('https://github.com/SnazzyPine25/Discord.FM-Widget')">Gitub</a></code></footer>
     </div>
     <script>
     const remote = require('electron').remote

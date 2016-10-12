@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="widgetBody" onmouseover="document.getElementById('winBtns').style.display = 'block'" onmouseout="document.getElementById('winBtns').style.display = 'none'">
-      <img id="avatar" src="https://discord.fm/assets/logo.png" width=128 height=128 style="float: left;">
+      <img id="avatar" src="./img/dfm.png" width=128 height=128 style="float: left;">
       <div style="float: left; padding: 5px 5px; width: 350px;">
         <p id="artist" style="margin-left: 3px;"></p>
         <h1 id="title">Connecting Websocket...</h1>
@@ -66,48 +66,42 @@
     }
     console.log('Connecting...');
     if(Object.keys(viableLibs).map(l=>l==QueryString.lib).includes(true)){
-      var socket = new Websocket('wss://sockets.temp.discord.fm');
-      socket.onopen(function () {
-        request.get('https://temp.discord.fm/libraries/queue')
-        .end((err,res)=>{
-          if(err){
-            document.getElementById('title').innerHTML = "Song will update on the next song..."
-          }else{
-            document.getElementById('title').innerHTML = res.body[QueryString.lib].current.title
-            checkBounds(res.body[QueryString.lib].current.title)
+      var socket = new require('ws')('wss://sockets.temp.discord.fm')
+        .on('open', ()=>{
+          request.get('https://temp.discord.fm/libraries/queue')
+          .end((err,res)=>{
+            if(err){
+              document.getElementById('title').innerHTML = "Song will update on the next song..."
+            }else{
+              document.getElementById('title').innerHTML = res.body[QueryString.lib].current.title
+              checkBounds(res.body[QueryString.lib].current.title)
+            }
+          });
+          console.log('Successfully connected to sockets server! Listening for events...');
+          document.getElementById('lib').innerHTML = viableLibs[QueryString.lib];
+        })
+        .on('message', (data)=>{
+          if (data === 'helo') {
+            return console.log('received helo');
+          }
+
+          try {
+            data = JSON.parse(data);
+            if (data.event == 'play') {
+              if (data.data.bot == QueryString.lib) {
+                document.getElementById('title').innerHTML = data.data.song.title
+                checkBounds(data.data.song.title)
+              }
+            }
+          } catch (err) {
+            console.log('Failed to parse incoming data:', err);
           }
         });
-        console.log('Successfully connected to sockets server! Listening for events...');
-        document.getElementById('lib').innerHTML = viableLibs[QueryString.lib];
-      });
-      
-      socket.onmessage(function (e) {
-        var data = e.data;
-
-        if (data === 'helo') {
-          return console.log('received helo');
-        }
-        
-        try {
-          data = JSON.parse(data);
-
-          if (data.event == 'play') {
-            if (data.data.bot == QueryString.lib) {
-              document.getElementById('title').innerHTML = data.data.song.title
-              checkBounds(data.data.song.title)
-            }
-          }
-        } catch (err) {
-          console.log('Failed to parse incoming data:', err);
-        }
-      });
-
       socket.onerror(function (err) {
         console.log('Houston, we have a problem...');
         console.error(err);
         console.error(err.stack);
       });
-
       socket.onclose(function () {
         console.log('Disconnected from socket server, reconnecting in 10s');
         setTimeout(function () {
