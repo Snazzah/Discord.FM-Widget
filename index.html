@@ -3,112 +3,48 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
+    <title>Discord.FM Stream Widget</title>
+    <link rel="icon" type="image/png" class="" href="./favicon.ico">
     <link rel="stylesheet" href="widget.css">
+    <link rel="stylesheet" href="animate.css">
+    <script type="text/javascript" src="dfm.js"></script>
   </head>
   <body>
-    <div class="widgetBody" onmouseover="document.getElementById('winBtns').style.display = 'block'" onmouseout="document.getElementById('winBtns').style.display = 'none'">
+    <div class="widgetBody">
       <img id="avatar" src="./img/dfm.png" width=128 height=128 style="float: left;">
       <div style="float: left; padding: 5px 5px; width: 350px;">
         <p id="artist" style="margin-left: 3px;"></p>
         <h1 id="title">Connecting Websocket...</h1>
         <h3 id="lib" style="margin-left: 3px;">Missingno</h3>
-        <div id="winBtns" style="float: right; padding: 5px 5px; display: none;">
-          <input draggable="false" align="right" class="win-sys" type="image" src="./img/close.png" alt="Close" title="Close" width=20 height=20 onclick="win.close()">
-          <input draggable="false" align="right" class="win-sys" type="image" src="./img/back.png" alt="Back" title="back" width=20 height=20 onclick="main.backToStart()">
-        </div>
       </div>
     </div>
-    <script>
-    const remote = require('electron').remote
-    const main = remote.require('./index.js')
-    const win = main.win()
-    const request = require('superagent')
-    function checkBounds(song){
-      if(document.body.scrollHeight > 149){
-        document.getElementById('title').outerHTML = `<marquee id="title" scrollamount="5"><h1>${song}</h1></marquee>`
-      }else{
-        document.getElementById('title').outerHTML = `<h1 id="title">${song}</h1>`
-      }
-    }
-		var QueryString = function () {
-		  // This function is anonymous, is executed immediately and
-		  // the return value is assigned to QueryString!
-		  var query_string = {};
-		  var query = window.location.search.substring(1);
-		  var vars = query.split("&");
-		  for (var i=0;i<vars.length;i++) {
-			var pair = vars[i].split("=");
-				// If first entry with this name
-			if (typeof query_string[pair[0]] === "undefined") {
-			  query_string[pair[0]] = decodeURIComponent(pair[1]);
-				// If second entry with this name
-			} else if (typeof query_string[pair[0]] === "string") {
-			  var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
-			  query_string[pair[0]] = arr;
-				// If third or later entry with this name
-			} else {
-			  query_string[pair[0]].push(decodeURIComponent(pair[1]));
-			}
-		  }
-		  return query_string;
-		}();
-    viableLibs = {
-      'electro-hub': "Electro Hub",
-      'chill-corner': "Chill Corner",
-      'hip-hop': "Hip-Hop",
-      'coffee-house-jazz': "Coffee-House Jazz",
-      'japanese-lounge': "Japanese Lounge",
-      'classical': "Classical",
-      'retro-renegade': "Retro Renegade",
-      'metal-mix': "Metal Mix",
-      'korean-madness': "Korean Madness"
-    }
-    console.log('Connecting...');
-    if(Object.keys(viableLibs).map(l=>l==QueryString.lib).includes(true)){
-      var socket = new require('ws')('wss://sockets.temp.discord.fm')
-        .on('open', ()=>{
-          request.get('https://temp.discord.fm/libraries/queue')
-          .end((err,res)=>{
-            if(err){
-              document.getElementById('title').innerHTML = "Song will update on the next song..."
-            }else{
-              document.getElementById('title').innerHTML = res.body[QueryString.lib].current.title
-              checkBounds(res.body[QueryString.lib].current.title)
-            }
-          });
-          console.log('Successfully connected to sockets server! Listening for events...');
-          document.getElementById('lib').innerHTML = viableLibs[QueryString.lib];
-        })
-        .on('message', (data)=>{
-          if (data === 'helo') {
-            return console.log('received helo');
-          }
-
-          try {
-            data = JSON.parse(data);
-            if (data.event == 'play') {
-              if (data.data.bot == QueryString.lib) {
-                document.getElementById('title').innerHTML = data.data.song.title
-                checkBounds(data.data.song.title)
-              }
-            }
-          } catch (err) {
-            console.log('Failed to parse incoming data:', err);
-          }
-        });
-      socket.onerror(function (err) {
-        console.log('Houston, we have a problem...');
-        console.error(err);
-        console.error(err.stack);
-      });
-      socket.onclose(function () {
-        console.log('Disconnected from socket server, reconnecting in 10s');
-        setTimeout(function () {
-          socket = new Websocket('wss://sockets.temp.discord.fm');
-        }, 10000);
-      });
-    }
-    </script>
+    <div class="homeBody">
+      <img id="avatar" src="./img/dfmw.png">
+      <div class="links">
+        <span>Made by <a href="https://twitter.com/SnazzahGuy">Snazzah</a></span><br>
+        <a href="http://discord.fm"><img id="avatar" src="./img/dfm.png" width=32 height=32></a>
+        <a href="https://github.com/SnazzyPine25/Discord.FM-Widget/tree/gh-pages"><img id="avatar" src="./img/github.png" width=32 height=32></a>
+      </div>
+      <div class="settings">
+        <select id="dropdown" onchange="DFMW.genLink()">
+          <option value="none">Select a Library</option>
+          <option value="electro-hub">Electro Hub</option>
+          <option value="chill-corner">Chill Corner</option>
+          <option value="hip-hop">Hip-Hop</option>
+          <option value="coffee-house-jazz">Coffee-House Jazz</option>
+          <option value="japanese-lounge">Japanese Lounge</option>
+          <option value="classical">Classical</option>
+          <option value="retro-renegade">Retro Renegade</option>
+          <option value="metal-mix">Metal Mix</option>
+          <option value="korean-madness">Korean Madness</option>
+          <option value="electro-swing">Electro Swing</option>
+          <option value="lfg-electro-hub">LFG Electro Hub</option>
+        </select><br>
+        <span><input type="checkbox" id="marquee" onclick="DFMW.genLink()"/>Always Use Marquee</span>
+      </div>
+      <div class="output">
+        <input id="outputlink" placeholder="Your link would appear here...">
+      </div>
+    </div>
   </body>
 </html>

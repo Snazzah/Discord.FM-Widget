@@ -1,3 +1,10 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
 body {
   font: 14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
@@ -5,6 +12,11 @@ body {
   -webkit-app-region: drag;
   -webkit-user-select: none;
   background: #222;
+  display: table;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .widgetBody {
@@ -12,6 +24,13 @@ body {
   padding: 0 10px 0;
   width: 500px;
   height: 128px;
+  display: none;
+}
+
+.homeBody {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -46,10 +65,6 @@ select {
 
 marquee {
   width: 350px;
-}
-
-.win-sys {
-  -webkit-app-region: no-drag;
 }
 option {
   padding: 5px 10px;
@@ -86,10 +101,82 @@ footer code {
   border-radius: 8px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 }
+.output {
+  padding: 10px 0;
+  overflow: hidden;
+  width: auto;
+  text-align: -webkit-center;
+  bottom: 0;
+  z-index: 0;
+  font-size: 16px;
+  background: #111;
+  padding: 5px 10px;
+  color: #878787 !important;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+.links {
+  margin: 0 auto;
+  padding: 10px 0 0;
+  overflow: hidden;
+  width: auto;
+  text-align: -webkit-center;
+  bottom: 0;
+  z-index: 0;
+  font-size: 16px;
+  background: #333;
+  padding: 5px 10px;
+  color: #878787 !important;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+.settings {
+  overflow: hidden;
+  width: auto;
+  text-align: -webkit-center;
+  z-index: 0;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 5px 10px;
+  color: #555 !important;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+select {
+   margin: 10px 0;
+}
+input {
+   color: #000;
+   padding: 5px 10px;
+   font-size: 16px;
+   background: #fff;
+   border: none;
+   font-family: Roboto;
+   width: 60%;
+}
+input[type="checkbox"] {
+   width: initial;
+}
+.links a {
+  color: #fff;
+  font-weight: bold;
+  -webkit-app-region: no-drag;
+}
 
 footer p {
   float: left;
 }
 footer p + p {
   float: right;
+}
+@-webkit-keyframes np-flash {
+    0% {
+        background-color: #008CBA;
+        opacity:1;
+    }
+    50% {
+        background-color: #5BC0DE;
+    }
+    100% {
+        background-color: #008CBA;
+    }
 }
