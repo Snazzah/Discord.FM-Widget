@@ -152,6 +152,7 @@ input {
    border: none;
    font-family: Roboto;
    width: 60%;
+   margin: 10px 0;
 }
 input[type="checkbox"] {
    width: initial;
@@ -160,6 +161,14 @@ input[type="checkbox"] {
   color: #fff;
   font-weight: bold;
   -webkit-app-region: no-drag;
+}
+span {
+  font-family: Roboto;
+}
+span b {
+  font-family: Roboto;
+  color: #fff;
+  font-weight: lighter;
 }
 
 footer p {
