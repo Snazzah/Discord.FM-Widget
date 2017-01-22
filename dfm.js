@@ -22,7 +22,7 @@ const DFMW = {
 		var selected = document.getElementById("dropdown").options[document.getElementById("dropdown").selectedIndex].value;
 		var marquee = document.getElementById("marquee").checked;
 		if(selected !== "none"){
-			document.getElementById("outputlink").value = `http://snazzypine25.github.io/Discord.FM-Widget?lib=${selected}${
+			document.getElementById("outputlink").value = `https://snazzypine25.github.io/Discord.FM-Widget/?lib=${selected}${
 				marquee == true ? "&marquee=true" : ""
 			}`
 		}
