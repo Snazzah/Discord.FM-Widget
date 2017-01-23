@@ -13,6 +13,7 @@ body {
   -webkit-user-select: none;
   background: #222;
   display: table;
+  overflow-wrap: break-word;
 }
 
 * {
@@ -22,8 +23,6 @@ body {
 .widgetBody {
   border-radius: 8px;
   padding: 0 10px 0;
-  width: 500px;
-  height: 128px;
   display: none;
 }
 

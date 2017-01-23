@@ -32,7 +32,8 @@ const DFMW = {
 			document.getElementById('title').outerHTML = `<marquee id="title" scrollamount="5"><h1>${song}</h1></marquee>`
 			return;
 		}
-		if(document.body.scrollHeight > 149){
+		let height = document.getElementsByClassName("widgetBody")[0].clientHeight;
+		if(height > 128){
 			document.getElementById('title').outerHTML = `<marquee id="title" scrollamount="5"><h1>${song}</h1></marquee>`
 		}else{
 			document.getElementById('title').outerHTML = `<h1 id="title">${song}</h1>`
@@ -91,7 +92,7 @@ const Libraries = {
 window.onload = () => {
 	if(QueryString.lib !== undefined){
 		document.getElementsByClassName('homeBody')[0].style.display = "none";
-		document.getElementsByClassName('widgetBody')[0].style.display = "block";
+		document.getElementsByClassName('widgetBody')[0].style.display = "inline-block";
 		console.log('Connecting...');
 		if(Object.keys(Libraries).map(l=>l==QueryString.lib).includes(true)){
 			DFMW.start(QueryString.lib, Libraries[QueryString.lib]);
