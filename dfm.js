@@ -28,15 +28,22 @@ const DFMW = {
 		}
     },
 	checkBounds: function(song){
-		if(QueryString.marquee == "true"){
-			document.getElementById('title').outerHTML = `<marquee id="title" scrollamount="5"><h1>${song}</h1></marquee>`
-			return;
-		}
 		let height = document.getElementsByClassName("widgetBody")[0].clientHeight;
-		if(height > 128){
-			document.getElementById('title').outerHTML = `<marquee id="title" scrollamount="5"><h1>${song}</h1></marquee>`
+		if(height > 128 || QueryString.marquee == "true"){
+			document.getElementById('title').outerHTML = `<marquee id="title" style="width: ${window.innerWidth-170}px;" scrollamount="5"><h1>${song}</h1></marquee>`
 		}else{
 			document.getElementById('title').outerHTML = `<h1 id="title">${song}</h1>`
+		}
+    },
+    checkWindow: function(){
+		if(window.innerHeight < 150 || window.innerWidth < 530){
+			document.getElementsByClassName('homeBody')[0].style.display = "none";
+			document.getElementsByClassName('widgetBadDisplayBody')[0].style.display = "table-cell";
+			document.getElementsByClassName('widgetBody')[0].style.display = "none";
+		}else if(QueryString.lib !== undefined){
+			document.getElementsByClassName('homeBody')[0].style.display = "none";
+			document.getElementsByClassName('widgetBadDisplayBody')[0].style.display = "none";
+			document.getElementsByClassName('widgetBody')[0].style.display = "inline-block";
 		}
     },
 	start: function(lib, libname){
@@ -49,7 +56,7 @@ const DFMW = {
 					document.getElementById('title').innerHTML = "Song will update on the next song...";
 				})
 				.then(function(response) {
-					document.getElementById('title').innerHTML = response[lib].current.title
+					document.getElementById('title').innerHTML = response[lib].current.title;
 					DFMW.checkBounds(response[lib].current.title)
 				})
 				.catch(function(error) {
@@ -89,8 +96,24 @@ const Libraries = {
 	"electro-swing": "Electro Swing",
 	"lfg-electro-hub": "Electro Hub"
 }
+const DeviceKeywords = [
+	"Android",
+	"webOS",
+	"iPhone",
+	"iPad",
+	"iPod",
+	"BlackBerry",
+	"IEMobile",
+	"Opera Mini"
+]
 window.onload = () => {
-	if(QueryString.lib !== undefined){
+	if(DeviceKeywords.map(dkw=>navigator.userAgent.match(new RegExp(dkw, "ig"))).map(dkw=>dkw==null).includes(false)){
+		document.getElementsByClassName('homeBody')[0].style.display = "none";
+		document.getElementsByClassName('widgetPhoneBody')[0].style.display = "table-cell";
+		document.getElementById('wpbText').style = `font-size: ${Math.abs(window.innerWidth-window.innerHeight)/6}px`;
+		document.getElementById('wpbImg').style = `width: ${Math.abs(window.innerWidth-window.innerHeight)/4}px`;
+		document.getElementById('useragent').innerHTML = navigator.userAgent;
+	}else if(QueryString.lib !== undefined){
 		document.getElementsByClassName('homeBody')[0].style.display = "none";
 		document.getElementsByClassName('widgetBody')[0].style.display = "inline-block";
 		console.log('Connecting...');
@@ -100,5 +123,7 @@ window.onload = () => {
 			document.getElementById('title').innerHTML = "Bad Library!";
 			document.getElementById('title').innerHTML = "";
 		}
+		window.onresize = DFMW.checkWindow;
+		DFMW.checkWindow();
 	}
 }

@@ -26,6 +26,12 @@ body {
   display: none;
 }
 
+.widgetBadDisplayBody, .widgetPhoneBody {
+  display: none;
+  vertical-align: middle;
+  text-align: center;
+}
+
 .homeBody {
   display: table-cell;
   vertical-align: middle;
@@ -90,7 +96,7 @@ footer a {
 }
 
 footer code {
-  background: #222222;
+  background: #222;
   padding: 5px 10px;
   color: #878787 !important;
   -webkit-border-radius: 8px;
@@ -168,6 +174,9 @@ span b {
   font-family: Roboto;
   color: #fff;
   font-weight: lighter;
+}
+.widgetBadDisplayBody span, .widgetPhoneBody span {
+    color: #777;
 }
 
 footer p {

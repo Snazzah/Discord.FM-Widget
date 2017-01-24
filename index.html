@@ -6,8 +6,6 @@
     <title>Discord.FM Stream Widget</title>
     <link rel="icon" type="image/png" class="" href="./favicon.ico">
     <link rel="stylesheet" href="widget.css">
-    <link rel="stylesheet" href="animate.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="dfm.js"></script>
   </head>
   <body>
@@ -19,9 +17,18 @@
         <h3 id="lib" style="margin-left: 3px;">Missingno</h3>
       </div>
     </div>
+    <div class="widgetBadDisplayBody">
+      <img id="avatar" src="./img/bad_display.png"><br>
+      <span>The dimentions of the widget are too small.</span><br>
+      <span>width: <b>&gt;= 530</b>, height: <b>&gt;= 150</b></span>
+    </div>
+    <div class="widgetPhoneBody">
+      <img id="wpbImg" src="./img/phone.png"><br>
+      <span id="wpbText">Mobile display is not supported.</span>
+    </div>
     <div class="homeBody">
       <img id="avatar" src="./img/dfmw.png"><br>
-      <span style="color: #555;">v<b>1.0.2</b><span>
+      <span style="color: #555;">v<b>1.0.3</b></span>
       <div class="links">
         <span>Made by <a href="https://twitter.com/SnazzahGuy">Snazzah</a></span><br>
         <a href="http://discord.fm"><img id="avatar" src="./img/dfm.png" width=32 height=32></a>
@@ -46,7 +53,7 @@
       </div>
       <div class="output">
         <input id="outputlink" placeholder="Your link would appear here..."><br>
-        <span>width: <b>530</b>, height: <b>150</b><span>
+        <span>width: <b>&gt;= 530</b>, height: <b>&gt;= 150</b></span>
       </div>
     </div>
   </body>
