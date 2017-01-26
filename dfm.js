@@ -104,7 +104,9 @@ const DeviceKeywords = [
 	"iPod",
 	"BlackBerry",
 	"IEMobile",
-	"Opera Mini"
+	"Opera Mini",
+	"KFAPWI",
+	"Nokia"
 ]
 window.onload = () => {
 	if(DeviceKeywords.map(dkw=>navigator.userAgent.match(new RegExp(dkw, "ig"))).map(dkw=>dkw==null).includes(false)){
