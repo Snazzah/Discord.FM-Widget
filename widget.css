@@ -11,9 +11,12 @@ body {
   color: white;
   -webkit-app-region: drag;
   -webkit-user-select: none;
-  background: #222;
+  background-color: #222;
   display: table;
   overflow-wrap: break-word;
+  background-size: cover;
+  background-position-x: center;
+  background-position-x: center;
 }
 
 * {
@@ -119,6 +122,12 @@ footer code {
   color: #878787 !important;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
   font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+.light-color #avatar {
+  content: url(./img/dfm_black.png);
+}
+.light-color #lib, .light-color #title {
+  color: #000;
 }
 .links {
   margin: 0 auto;

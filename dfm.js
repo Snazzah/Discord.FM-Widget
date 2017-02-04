@@ -21,9 +21,12 @@ const DFMW = {
 	genLink: function(){
 		var selected = document.getElementById("dropdown").options[document.getElementById("dropdown").selectedIndex].value;
 		var marquee = document.getElementById("marquee").checked;
+		var background = document.getElementById("background").checked;
 		if(selected !== "none"){
 			document.getElementById("outputlink").value = `http://widget.discord.fm/?lib=${selected}${
 				marquee == true ? "&marquee=true" : ""
+			}${
+				background == true ? "&background=true" : ""
 			}`
 		}
     },
@@ -84,17 +87,17 @@ const DFMW = {
 	}
 }
 const Libraries = {
-	"electro-hub": "Electro Hub",
-	"chill-corner": "Chill Corner",
-	"hip-hop": "Hip-Hop",
-	"coffee-house-jazz": "Coffee-House Jazz",
-	"japanese-lounge": "Japanese Lounge",
-	"classical": "Classical",
-	"retro-renegade": "Retro Renegade",
-	"metal-mix": "Metal Mix",
-	"korean-madness": "Korean Madness",
-	"electro-swing": "Electro Swing",
-	"lfg-electro-hub": "Electro Hub"
+	"electro-hub": ["Electro Hub", "electro-hub.png"],
+	"chill-corner": ["Chill Corner", "chill-corner.png"],
+	"hip-hop": ["Hip-Hop", "hip-hop.png"],
+	"coffee-house-jazz": ["Coffee-House Jazz", "coffee-house-jazz.png"],
+	"japanese-lounge": ["Japanese Lounge", "japanese-lounge.png"],
+	"classical": ["Classical", "classical.png"],
+	"retro-renegade": ["Retro Renegade", "retro-renegade.png"],
+	"metal-mix": ["Metal Mix", "metal-mix.png", true],
+	"korean-madness": ["Korean Madness", "korean-madness.png"],
+	"electro-swing": ["Electro Swing", "electro-swing.png"],
+	"lfg-electro-hub": ["Electro Hub", "electro-hub.png"]
 }
 const DeviceKeywords = [
 	"Android",
@@ -120,7 +123,13 @@ window.onload = () => {
 		document.getElementsByClassName('widgetBody')[0].style.display = "inline-block";
 		console.log('Connecting...');
 		if(Object.keys(Libraries).map(l=>l==QueryString.lib).includes(true)){
-			DFMW.start(QueryString.lib, Libraries[QueryString.lib]);
+			DFMW.start(QueryString.lib, Libraries[QueryString.lib][0]);
+			if(QueryString.background == "true"){
+				document.body.style["background-image"] = `url(./img/bgs/${Libraries[QueryString.lib][1]})`
+				if(Libraries[QueryString.lib][2]){
+					document.getElementsByClassName('widgetBody')[0].className = "widgetBody light-color"
+				}
+			}
 		}else{
 			document.getElementById('title').innerHTML = "Bad Library!";
 			document.getElementById('title').innerHTML = "";
