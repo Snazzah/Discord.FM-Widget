@@ -97,7 +97,7 @@ const Libraries = {
 	"metal-mix": ["Metal Mix", "metal-mix.png", true],
 	"korean-madness": ["Korean Madness", "korean-madness.png"],
 	"electro-swing": ["Electro Swing", "electro-swing.png"],
-	"lfg-electro-hub": ["Electro Hub", "electro-hub.png"]
+	"purely-pop": ["Purely Pop", "purely-pop.jpg"]
 }
 const DeviceKeywords = [
 	"Android",
