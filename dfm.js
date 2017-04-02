@@ -50,7 +50,7 @@ const DFMW = {
 		}
     },
 	start: function(lib, libname){
-		var socket = new WebSocket('wss://sockets.temp.discord.fm');
+		var socket = new WebSocket('wss://sockets.discord.fm');
 		socket.addEventListener('open', function (event) {
 			const request = new Request('https://temp.discord.fm/libraries/queue');
 			fetch(request)
