@@ -23,7 +23,7 @@ const DFMW = {
 		var marquee = document.getElementById("marquee").checked;
 		var background = document.getElementById("background").checked;
 		if(selected !== "none"){
-			document.getElementById("outputlink").value = `http://widget.discord.fm/?lib=${selected}${
+			document.getElementById("outputlink").value = `http://widget.amped.fm/?lib=${selected}${
 				marquee == true ? "&marquee=true" : ""
 			}${
 				background == true ? "&background=true" : ""
@@ -52,7 +52,7 @@ const DFMW = {
 	start: function(lib, libname){
 		var socket = new WebSocket('wss://sockets.discord.fm');
 		socket.addEventListener('open', function (event) {
-			const request = new Request('https://temp.discord.fm/libraries/queue');
+			const request = new Request('https://libraries.amped.fm/queue');
 			fetch(request)
 				.then(function(response) {
 					if(response.status == 200) return response.json();
